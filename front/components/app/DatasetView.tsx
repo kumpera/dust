@@ -25,54 +25,67 @@ const CodeEditor = dynamic(
 
 const defaultData = [
   {
-    question: "What is 12*4?",
-    answer: "48",
+    question: "What is the main revenue stream at Google?",
+    companyName: "Google",
+    employees: "100000",
+    location: "California"
   },
   {
-    question: "What is 56/7?",
-    answer: "8",
+    question: "How does Apple Inc. ensure data privacy in its devices?",
+    companyName: "Apple",
+    employees: "137000",
+    location: "California"
   },
   {
-    question: "What is 43-78?",
-    answer: "-35",
+    question: "What is Amazon's best-selling product category?",
+    companyName: "Amazon",
+    employees: "1298000",
+    location: "Washington"
   },
   {
-    question: "What is 2+2?",
-    answer: "4",
+    question: "Which market does Microsoft dominate with its products?",
+    companyName: "Microsoft",
+    employees: "181000",
+    location: "Washington"
   },
   {
-    question: "What is 5^2?",
-    answer: "25",
+    question: "What sustainability initiatives is Tesla known for?",
+    companyName: "Tesla",
+    employees: "70757",
+    location: "California"
   },
   {
-    question: "What is 81/9?",
-    answer: "9",
+    question: "How does Facebook (Meta) manage user data for ad targeting?",
+    companyName: "Facebook",
+    employees: "58604",
+    location: "California"
   },
   {
-    question: "What is 5-24?",
-    answer: "-19",
+    question: "What is the most popular service offered by Netflix?",
+    companyName: "Netflix",
+    employees: "9400",
+    location: "California"
   },
   {
-    question: "What is 67*4?",
-    answer: "268",
+    question: "How has Spotify changed the way people listen to music?",
+    companyName: "Spotify",
+    employees: "6684",
+    location: "Sweden"
   },
   {
-    question: "What is 5*6?",
-    answer: "30",
+    question: "What innovative technology is Samsung known for in the smartphone market?",
+    companyName: "Samsung",
+    employees: "287439",
+    location: "South Korea"
   },
   {
-    question: "What is 2^7?",
-    answer: "128",
-  },
-  {
-    question: "What is 7*6?",
-    answer: "42",
-  },
-  {
-    question: "What is 23*9?",
-    answer: "207",
-  },
+    question: "What is the key to Coca-Cola's branding and marketing success?",
+    companyName: "Coca-Cola",
+    employees: "80300",
+    location: "Georgia"
+  }
 ];
+
 
 const genDefaultDataset = () => {
   const shuffled = defaultData.map((a) => a);
