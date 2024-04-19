@@ -876,6 +876,85 @@ async function _getDustGlobalAgent(
   };
 }
 
+
+
+class LabsTranscriptsAssistantPrompt {
+  private static instance: LabsTranscriptsAssistantPrompt;
+  private staticPrompt: string | null = null;
+
+  public static getInstance(): LabsTranscriptsAssistantPrompt {
+    if (!LabsTranscriptsAssistantPrompt.instance) {
+      LabsTranscriptsAssistantPrompt.instance = new LabsTranscriptsAssistantPrompt();
+    }
+    return LabsTranscriptsAssistantPrompt.instance;
+  }
+
+  public async getStaticPrompt(): Promise<string | null> {
+    if (this.staticPrompt === null) {
+      try {
+        const filePath = path.join(
+          process.cwd(),
+          "prompt/labs/transcripts_prompt.md"
+        );
+        this.staticPrompt = await readFileAsync(filePath, "utf-8");
+      } catch (err) {
+        logger.error("Error reading prompt file for @help agent:", err);
+        return null;
+      }
+    }
+    return this.staticPrompt;
+  }
+}
+
+// LABS - AGENTS THAT CAN BE RETIRED ANYTIME
+
+async function _getLabsTranscriptsGlobalAgent(
+  auth: Authenticator
+): Promise<AgentConfigurationType> {
+  let prompt = "";
+  
+  const LabsTranscriptsAssistantPromptInstance = LabsTranscriptsAssistantPrompt.getInstance();
+  const staticPrompt = await LabsTranscriptsAssistantPromptInstance.getStaticPrompt();
+
+  if (staticPrompt) {
+    prompt = staticPrompt;
+  }
+  const owner = auth.workspace();
+  if (!owner) {
+    throw new Error("Unexpected `auth` without `workspace`.");
+  }
+  const model = !auth.isUpgraded()
+    ? {
+        providerId: GPT_3_5_TURBO_MODEL_CONFIG.providerId,
+        modelId: GPT_3_5_TURBO_MODEL_CONFIG.modelId,
+      }
+    : {
+        providerId: GPT_4_TURBO_MODEL_CONFIG.providerId,
+        modelId: GPT_4_TURBO_MODEL_CONFIG.modelId,
+      };
+  return {
+    id: -1,
+    sId: GLOBAL_AGENTS_SID.LABS_TRANSCRIPTS,
+    version: 0,
+    versionCreatedAt: null,
+    versionAuthorId: null,
+    name: "labs_transcripts",
+    description: "Meetings Transcript processing",
+    instructions: prompt,
+    pictureUrl: "https://dust.tt/static/systemavatar/dust_avatar_full.png",
+    status: "active",
+    userListStatus: "not-in-list",
+    scope: "global",
+    generation: {
+      id: -1,
+      model,
+      temperature: 0.5,
+      forceUseAtIteration: 0,
+    },
+    actions: [],
+  };
+}
+
 /**
  * Exported functions
  */
@@ -989,6 +1068,9 @@ export async function getGlobalAgent(
       break;
     case GLOBAL_AGENTS_SID.DUST:
       agentConfiguration = await _getDustGlobalAgent(auth, { settings });
+      break;
+    case GLOBAL_AGENTS_SID.LABS_TRANSCRIPTS:
+      agentConfiguration = await _getLabsTranscriptsGlobalAgent(auth);
       break;
     default:
       return null;

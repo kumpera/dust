@@ -56,6 +56,8 @@ export enum GLOBAL_AGENTS_SID {
   // Needed to preserve ongoing chat integrity due to 'sId=mistral' references in legacy messages.
   MISTRAL_SMALL = "mistral",
   GEMINI_PRO = "gemini-pro",
+  // LABS - Can be removed anytime
+  LABS_TRANSCRIPTS = "labs-transcripts",
 }
 
 const CUSTOM_ORDER: string[] = [
